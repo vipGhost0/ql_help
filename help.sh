@@ -43,7 +43,6 @@ gen_pt_pin_array() {
     local tmp1 i pt_pin_temp
     for ((i = 0; i < $user_sum; i++)); do        
         pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
-        echo $block_arr
         [[ $block_arr =~ $pt_pin_temp ]] && block_pin[i]=true || block_pin[i]=false
         [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp        
     done
@@ -54,7 +53,8 @@ combine_sub() {
     local combined_all=""
     local tmp1 tmp2
     for ((i = 1; i <= ${#pt_pin[*]}; i++)); do
-        if [[ ${block_pin[i]} == true ]]; then
+        j=$(($i - 1))
+        if [[ ${block_pin[j]} == true ]]; then
             continue 1
         fi
         local tmp1=$what_combine$i
