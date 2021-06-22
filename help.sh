@@ -76,7 +76,6 @@ combine_all() {
     echo "组合所有账号的Cookie与互助码,共"${#env_name[*]}"个"
     for ((i = 0; i < ${#env_name[*]}; i++)); do
         result=$(combine_sub ${var_name[i]})
-        echo $result
         if [[ $result ]]; then
             export ${env_name[i]}="$result"
         fi
@@ -91,5 +90,5 @@ if [[ $p1 == *.js ]]; then
     fi       
 fi
 import_help_config
-blockJDCookie
+export JD_COOKIE=$(blockJDCookie)
 combine_all
