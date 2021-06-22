@@ -35,20 +35,28 @@ import_help_config () {
     [ ! -n "$var_name" ] && var_name=($(echo ${default_var_name[*]}))
 }
 
+gen_pt_pin_array() {
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    local user_sum=${#array[*]}
+    local block_arr=${BlockPtPin:-""}
+    local tmp1 i pt_pin_temp
+    for ((i = 0; i < $user_sum; i++)); do        
+        pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
+        echo $block_arr
+        [[ $block_arr =~ $pt_pin_temp ]] && block_pin[i]=true || block_pin[i]=false
+        [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp        
+    done
+}
+
 combine_sub() {
     local what_combine=$1
     local combined_all=""
     local tmp1 tmp2
-    local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
-    local user_sum=${#array[*]}
-    local block_pin=${BlockPtPin:-""}
-    for ((i = 1; i <= $user_sum; i++)); do
-        for pin in $block_pin; do
-            echo $array[i]
-            echo $pin
-            [[ $array[i] =~ $pin ]]  && continue 2
-        done
+    for ((i = 1; i <= ${#pt_pin[*]}; i++)); do
+        if [[ ${block_pin[i]} == true ]]; then
+            continue 1
+        fi
         local tmp1=$what_combine$i
         local tmp2=${!tmp1}
         combined_all="$combined_all&$tmp2"
@@ -75,4 +83,5 @@ if [[ $p1 == *.js ]]; then
     fi       
 fi
 import_help_config
+gen_pt_pin_array
 combine_all
