@@ -35,15 +35,6 @@ import_help_config () {
     [ ! -n "$var_name" ] && var_name=($(echo ${default_var_name[*]}))
 }
 
-## 统计用户数量
-count_user_sum () {
-    for ((i=1; i<=${SUM:-$((3 * 4))}; i++)); do
-        local tmp1=Cookie$i
-        local tmp2=${!tmp1}
-        [[ $tmp2 ]] && user_sum=$i || break
-    done
-}
-
 combine_sub() {
     local what_combine=$1
     local combined_all=""
@@ -82,5 +73,4 @@ if [[ $p1 == *.js ]]; then
     fi       
 fi
 import_help_config
-count_user_sum
 combine_all
