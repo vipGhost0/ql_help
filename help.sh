@@ -52,7 +52,7 @@ blockJDCookie() {
             tempcookies="$tempcookies&${array[i]}"
         fi
     done
-    echo $tempcookies | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
+    export JD_COOKIE=$(echo $tempcookies | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}")
 }
 
 combine_sub() {
@@ -90,5 +90,5 @@ if [[ $p1 == *.js ]]; then
     fi       
 fi
 import_help_config
-export JD_COOKIE=$(blockJDCookie)
+blockJDCookie
 combine_all
