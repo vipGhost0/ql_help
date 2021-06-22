@@ -45,7 +45,9 @@ combine_sub() {
     local block_pin=${BlockPtPin:-""}
     for ((i = 1; i <= $user_sum; i++)); do
         for pin in $block_pin; do
-            [[ $array[i] == *$pin* ]]  && continue 2
+            echo $array[i]
+            echo $pin
+            [[ $array[i] =~ $pin ]]  && continue 2
         done
         local tmp1=$what_combine$i
         local tmp2=${!tmp1}
