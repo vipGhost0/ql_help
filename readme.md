@@ -3,6 +3,7 @@
 1、tempBlockCookie功能  
 2、内部互助功能
 ### 注意：
+并发不调用task_before ，故并发暂时没有办法调用助力
 环境变量的jd cookie 名称分命名为JD_COOKIE
 原定时互助码 ql code 更改为bash /ql/repo/vipGhost0_ql_help/code.sh
 #### task_before.sh
