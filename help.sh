@@ -82,7 +82,7 @@ combine_all() {
     done
 }
 
-if [[ $p1 == *.js ]]; then
+if [[ $1 == *.js ]]; then
      if [[ $AutoHelpOther == true ]] && [[ $(ls $dir_code) ]]; then
         echo "导入code生成的互助码"
         local latest_log=$(ls -r $dir_code | head -1)
