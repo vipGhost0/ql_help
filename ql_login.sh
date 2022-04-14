@@ -29,9 +29,16 @@ login(){
     fi
 }
 ql_login(){
-    local token=$(cat /ql/config/auth.json | jq --raw-output .token)
-    local username=$(cat /ql/config/auth.json | jq --raw-output .username)
-    local password=$(cat /ql/config/auth.json | jq --raw-output .password)    
+    if [ ! -f "/ql/data/config/auth.json" ]; then
+        local token=$(cat /ql/data/config/auth.json | jq --raw-output .token)
+        local username=$(cat /ql/data/config/auth.json | jq --raw-output .username)
+        local password=$(cat /ql/data/config/auth.json | jq --raw-output .password) 
+    else
+        local token=$(cat /ql/config/auth.json | jq --raw-output .token)
+        local username=$(cat /ql/config/auth.json | jq --raw-output .username)
+        local password=$(cat /ql/config/auth.json | jq --raw-output .password)    
+    fi
+    
     if check $token; then
         echo "未登录"
         login $username $password
