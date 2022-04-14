@@ -30,15 +30,15 @@ login(){
 }
 ql_login(){
     if [ ! -f "/ql/data/config/auth.json" ]; then
-        echo "新版青龙"
-        local token=$(cat /ql/data/config/auth.json | jq --raw-output .token)
-        local username=$(cat /ql/data/config/auth.json | jq --raw-output .username)
-        local password=$(cat /ql/data/config/auth.json | jq --raw-output .password) 
-    else
         echo "旧版青龙"
         local token=$(cat /ql/config/auth.json | jq --raw-output .token)
         local username=$(cat /ql/config/auth.json | jq --raw-output .username)
         local password=$(cat /ql/config/auth.json | jq --raw-output .password)    
+    else
+        echo "新版青龙"
+        local token=$(cat /ql/data/config/auth.json | jq --raw-output .token)
+        local username=$(cat /ql/data/config/auth.json | jq --raw-output .username)
+        local password=$(cat /ql/data/config/auth.json | jq --raw-output .password)         
     fi
     
     if check $token; then
