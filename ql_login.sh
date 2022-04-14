@@ -1,3 +1,5 @@
+loginApi="http://127.0.0.1:5700/api/login"
+
 check() {
     local currentTimeStamp=$(date +%s)
     local api=$(
@@ -19,7 +21,7 @@ check() {
 login(){
     local currentTimeStamp=$(date +%s)
     local api=$(
-        curl -s --noproxy "*" "http://127.0.0.1:5700/api/login?t=$currentTimeStamp" -H 'Accept: application/json' -H 'Content-Type: application/json;charset=UTF-8' --data-raw "{\"username\":\"$1\",\"password\":\"$2\"}" --compressed
+        curl -s --noproxy "*" "$loginApi?t=$currentTimeStamp" -H 'Accept: application/json' -H 'Content-Type: application/json;charset=UTF-8' --data-raw "{\"username\":\"$1\",\"password\":\"$2\"}" --compressed
     )
     code=$(echo $api | jq -r .code)
     if [[ $code != 200 ]]; then
@@ -36,6 +38,7 @@ ql_login(){
         local password=$(cat /ql/config/auth.json | jq --raw-output .password)    
     else
         echo "新版青龙"
+        loginApi="http://127.0.0.1:5700/api/user/login"
         local token=$(cat /ql/data/config/auth.json | jq --raw-output .token)
         local username=$(cat /ql/data/config/auth.json | jq --raw-output .username)
         local password=$(cat /ql/data/config/auth.json | jq --raw-output .password)         
